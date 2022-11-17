@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>:Verizon Formatter</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="unformattedText">        
+            <textarea id="textIn" rows="6" cols="100"></textarea>
+            <br><br>
+            <button id="formatBtn">Format</button>
+        </div>
+        <div id="formattedText" style="font-size: small">
+        </div>
+
+    </body>
+        <script>
+            function clearText() {
+                $("#formattedText").empty();
+            };
+            function outputText() {
+                var inputText = $("#textIn").val();
+                var splitText = inputText.split(/[(),]+/).filter(function(e) {
+                    return e;
+                });
+                for (i = 0; i < splitText.length; i++) {
+                    var newP = $("<p></p>");
+
+                    if (splitText[i].match("AND NOT")) {
+                        var appendedP = $("<p><b>EXCLUDE</b></p>");
+                        appendedP.appendTo("#formattedText");
+                    }
+                    else if (splitText[i].match("OR")) {
+                        var appendedP = $("<p><b>OR</b></p>");
+                        appendedP.appendTo("#formattedText");
+                    }
+                    else {
+                        var appendedP = newP.text(splitText[i]);
+                        appendedP.appendTo("#formattedText");
+                    }
+                }
+            };
+
+            function performFunctions() {
+                clearText();
+                outputText();
+            };
+
+            $("#formatBtn").click(performFunctions);
+        </script>
+</html>
